@@ -4,5 +4,6 @@
 [[redirect]]
   from = "/*"
   to = "https://honk.gq/.netlify/functions/server/:splat"
-  status = 200
-  force = true
+[[redirect]]
+  from = "/home"
+  to = "/"

@@ -48,11 +48,11 @@ router.get('/:id', async (req, res, next) => {
   } catch (err) {
     return res.redirect('/')
   }
-  next()
+  return res.redirect('/')
 })
 
 // handle url creation
-router.post('/create', slowDown({
+router.post('/api/create', slowDown({
   windowMs: 30 * 1000,
   delayAfter: 2,
   delayMs: 500
@@ -82,10 +82,6 @@ router.post('/create', slowDown({
     // lets express know ur done with this url post thing and can move on if it needs to
     next(err)
   }
-})
-
-router.get('/hi', (req, res) => {
-  res.send('ahaha')
 })
 
 app.use('/.netlify/functions/server', router)

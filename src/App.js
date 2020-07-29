@@ -51,7 +51,7 @@ class App extends Component {
   }
 
   async postUrl (alias, url) {
-    return await trackPromise(fetch('/.netlify/functions/server/create', {
+    return await trackPromise(fetch('/.netlify/functions/server/api/create', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json; charset=UTF-8', Accept: 'application/json' },
       body: JSON.stringify({ alias, url })
