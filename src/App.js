@@ -1,8 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import './App.css';
+import './App.css'
 import { Button, Input, Form } from 'reactstrap'
+import { usePromiseTracker, trackPromise } from 'react-promise-tracker'
 
+const LoadingIndicator = () => {
+  const { promiseInProgress } = usePromiseTracker()
+  console.log()
+  return (
+    promiseInProgress && <h3>loading...</h3>
+  )
+}
 
 class App extends Component {
   constructor (props) {
@@ -16,11 +24,12 @@ class App extends Component {
       display: null
     }
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this)
   }
 
-  handleInputChange(event) {
-    const target = event.target;
+  handleInputChange (event) {
+    this.setState({ display: null })
+    const target = event.target
     const url = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gi
     if (target.name === 'url') {
       const matches = target.value.match(url)
@@ -34,7 +43,7 @@ class App extends Component {
   }
 
   async handleSubmit (event) {
-    event.preventDefault();
+    event.preventDefault()
     const response = await this.postUrl(this.state.alias, this.state.url)
     const body = await response.json()
     this.setState({ result: body, response })
@@ -42,26 +51,27 @@ class App extends Component {
   }
 
   async postUrl (alias, url) {
-    return await fetch('/create', { 
+    return await trackPromise(fetch('/.netlify/functions/server/create', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=UTF-8', 'Accept' : 'application/json' },
-      body: JSON.stringify({ alias, url })})
+      headers: { 'Content-Type': 'application/json; charset=UTF-8', Accept: 'application/json' },
+      body: JSON.stringify({ alias, url })
+    }))
   }
 
   displayCode () {
     if (this.state.result != null) {
-        if (this.state.response.ok) {
-          console.log(this.state)
-          const link = `http://honk.gq/${this.state.result.alias}`
+      if (this.state.response.ok) {
+        console.log(this.state)
+        const link = `http://honk.gq/${this.state.result.alias}`
         return (<p className="report d-flex justify-content-center">{'✅ Successfully created url! ✨'} <a href={link}> {link}</a> {'✨'}</p>)
-        } else {
-          return <p className="report d-flex justify-content-center">{`⛔️ This alias is already in use! 😭`}</p>
-        }
+      } else {
+        return <p className="report d-flex justify-content-center">{'⛔️ This alias is already in use! 😭'}</p>
+      }
     }
     return ''
   }
 
-  render = () => {
+  render () {
     return (
       <div className="App d-flex flex-column">
         <header>
@@ -78,16 +88,17 @@ class App extends Component {
                   <Input id="alias" name="alias" placeholder="alias" value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
                 </label>
                 <label>
-                <Button className="submit" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create short url</Button>
+                  <Button className="submit" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create short url</Button>
                 </label>
               </Form>
               {this.state.display}
+              <LoadingIndicator/>
             </div>
           </div>
         </section>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App
