@@ -26,8 +26,8 @@
     "client": "cd client && yarn start",
     "server": "yarn dev",
     "run": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "start": "node app.js && netlify-postbuild",
-    "netlify-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build"
+    "postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build",
+    "start": "node app.js && postbuild"
   },
   "devDependencies": {
     "eslint": "^7.5.0",
