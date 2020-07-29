@@ -38,8 +38,8 @@
     "build:lambda": "netlify-lambda build /",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy:draft": "netlify deploy --dir=build --functions=functions",
-    "deploy:prod": "netlify deploy --dir=build --functions=functions --prod"
+    "deploy:draft": "netlify deploy --dir=build --functions=/",
+    "deploy:prod": "netlify deploy --dir=build --functions=/ --prod"
   },
   "eslintConfig": {
     "extends": "react-app"

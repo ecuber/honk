@@ -118,7 +118,7 @@ client/bruh.env
 /coverage
 
 # production
-/build
+
 
 # misc
 .DS_Store
