@@ -3,6 +3,6 @@
   publish = "build"
 [[redirect]]
 from = "/*"
-to = "/.netlify/functions/server/:splat"
+to = "https://honk.gq/.netlify/functions/server/:splat"
 status = 200
 force = true
