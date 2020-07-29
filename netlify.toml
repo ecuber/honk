@@ -2,7 +2,7 @@
   functions = "functions"
   publish = "build"
 [[redirect]]
-from = "/*"
-to = "https://honk.gq/.netlify/functions/server/:splat"
-status = 200
-force = true
+  from = "/*"
+  to = "https://honk.gq/.netlify/functions/server/:splat"
+  status = 200
+  force = true
