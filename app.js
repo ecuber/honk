@@ -52,7 +52,14 @@ app.get('/:id', async (req, res, next) => {
 /*
  * post request to handle url creation
  */
-app.post('/create', async (req, res, next) => {
+app.post('/create', slowDown({
+  windowMs: 30 * 1000,
+  delayAfter: 1,
+  delayMs: 500
+}), rateLimit({
+  windowMs: 30 * 1000,
+  max: 1
+}), async (req, res, next) => {
   let { alias, url } = req.body
 
   if (!url.match(httpReg) && url.match(noHttpReg)) {
