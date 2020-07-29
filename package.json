@@ -1,0 +1,41 @@
+{
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-html": "^6.0.2",
+    "express": "^4.17.1",
+    "express-rate-limit": "^5.1.3",
+    "express-slow-down": "^1.3.1",
+    "helmet": "^3.23.3",
+    "monk": "^7.3.0",
+    "nanoid": "^3.1.11",
+    "yup": "^0.29.2"
+  },
+  "name": "elijah.cf",
+  "version": "1.0.0",
+  "description": "a speedy serverless url shortener ",
+  "main": "app.js",
+  "type": "module",
+  "repository": "https://github.com/ecuber/elijah.cf",
+  "author": "ecuber <37519236+ecuber@users.noreply.github.com>",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "nodemon",
+    "client": "cd client && yarn start",
+    "server": "yarn dev",
+    "run": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "node app.js",
+    "heroku-postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build"
+  },
+  "devDependencies": {
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.20.4",
+    "eslint-plugin-standard": "^4.0.1"
+  }
+}
