@@ -1,6 +1,3 @@
-[build]
-  Functions = "functions"
-  Publish = "/build"
 [[redirect]]
 from = "/*"
 to = "/.netlify/functions/server/:splat"
