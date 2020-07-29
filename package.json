@@ -27,7 +27,7 @@
     "server": "yarn dev",
     "run": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "postbuild": "cd client && yarn install && yarn install --only=dev --no-shrinkwrap && yarn build",
-    "start": "node app.js && postbuild"
+    "start": "postbuild && node app.js"
   },
   "devDependencies": {
     "eslint": "^7.5.0",
