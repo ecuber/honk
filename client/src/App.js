@@ -38,9 +38,7 @@ class App extends Component {
     const response = await this.postUrl(this.state.alias, this.state.url)
     const body = await response.json()
     this.setState({ result: body, response })
-    if (response.ok) {
-      this.setState({ display: this.displayCode() })
-    }
+    this.setState({ display: this.displayCode() })
   }
 
   async postUrl (alias, url) {
@@ -55,9 +53,9 @@ class App extends Component {
         if (this.state.response.ok) {
           console.log(this.state)
           const link = `http://honk.gq/${this.state.result.alias}`
-          return (<p>{'✅ Successfully created '}<a href={link}>{link}</a></p>)
+        return (<p className="report d-flex justify-content-center">{'✅ Successfully created url! ✨'} <a href={link}> {link}</a> {'✨'}</p>)
         } else {
-          return `⛔️ Something went wrong...`
+          return <p className="report d-flex justify-content-center">{`⛔️ This alias is already in use! 😭`}</p>
         }
     }
     return ''
@@ -65,22 +63,28 @@ class App extends Component {
 
   render = () => {
     return (
-      <div className="App">
+      <div className="App d-flex flex-column">
         <header>
-          <h1>honk!</h1>
-          <Form>
-            <label>URL:
-              <Input id="url" name="url" placeholder="url" value={this.state.url} onChange={event => this.handleInputChange(event)}></Input>
-            </label>
-            <label>Alias:
-              <Input id="alias" name="alias" placeholder="alias" value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
-            </label>
-            <label>
-            <Button type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create short url</Button>
-            </label>
-          </Form>
-          {this.state.display}
+          <h1 className="mt-4 d-flex justify-content-center">honk!</h1>
         </header>
+        <section>
+          <div className="d-flex justify-content-center">
+            <div className="d-flex col-5 flex-column justify-content-center">
+              <Form className="d-flex flex-column justify-content-center mb-4">
+                <label>URL:
+                  <Input id="url" name="url" placeholder="url" value={this.state.url} onChange={event => this.handleInputChange(event)}></Input>
+                </label>
+                <label>Alias:
+                  <Input id="alias" name="alias" placeholder="alias" value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
+                </label>
+                <label>
+                <Button className="submit" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create short url</Button>
+                </label>
+              </Form>
+              {this.state.display}
+            </div>
+          </div>
+        </section>
       </div>
     );
   }

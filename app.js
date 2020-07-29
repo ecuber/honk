@@ -11,7 +11,6 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 dotenv.config()
 const port = process.env.PORT || 5000
-const { isSchema } = yup
 const httpReg = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 const noHttpReg = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/
 
@@ -28,7 +27,9 @@ app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static(path.join('./client/build')))
-app.use(cors())
+if (process.env.NODE_ENV === 'development') {
+  app.use(cors())
+}
 
 const schema = yup.object().shape({
   alias: yup.string().trim().matches(/$|^[\w-]+$/i), // matches alphanumeric case insensitive strings
@@ -42,9 +43,8 @@ app.get('/:id', async (req, res, next) => {
     if (url) {
       return res.redirect(url.url)
     }
-    next()
   } catch (err) {
-    return res.redirect(`localhost:${port}`)
+    return res.status(404).send('😧 bruh i don\'t think that page exists 😭')
   }
   next()
 })
@@ -72,7 +72,8 @@ app.post('/create', slowDown({
     } else {
       const current = await urls.findOne({ alias })
       if (current) {
-        return res.status(500).send('😲 bruh someone took that alias already 😥')
+        console.log('embarrassing')
+        return res.status(500).json({ message: '😲 bruh someone took that alias already 😥' })
       }
     }
     alias = alias.toLowerCase()
