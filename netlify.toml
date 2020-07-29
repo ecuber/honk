@@ -1,9 +1,8 @@
 [build]
   functions = "functions"
   publish = "build"
-[[redirect]]
+[[redirects]]
   from = "/*"
   to = "https://honk.gq/.netlify/functions/server/:splat"
-[[redirect]]
-  from = "/home"
-  to = "/"
+  status = 301
+  force = false
