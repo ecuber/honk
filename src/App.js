@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 import { Button, Input, Form } from 'reactstrap'
 import { usePromiseTracker, trackPromise } from 'react-promise-tracker'
+import WarningAlert from './WarningAlert'
+import SuccessAlert from './SuccessAlert'
 
 const LoadingIndicator = () => {
   const { promiseInProgress } = usePromiseTracker()
@@ -12,12 +14,23 @@ const LoadingIndicator = () => {
   )
 }
 
+async function getAdjective () {
+  const nouns = ['ocean&topics=size', 'sky&topics=size', 'goose', 'ant&topics=size', 'city', 'plant']
+  return await fetch(`https://api.datamuse.com/words?rel_jjb=${nouns[Math.floor(Math.random() * nouns.length)]}`, {
+    method: 'GET'
+  }).then(res => res.json()).then(data => {
+    const word = data[Math.floor(Math.random() * data.length)].word
+    return word
+  })
+}
+
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
       alias: '',
       url: '',
+      placeHolder: null,
       validURL: false,
       result: null,
       response: null,
@@ -38,13 +51,13 @@ class App extends Component {
       })
     }
     this.setState({
-      [target.name]: target.value
+      [target.name]: target.value.replace(/ /g, '_')
     })
   }
 
   async handleSubmit (event) {
     event.preventDefault()
-    const response = await this.postUrl(this.state.alias, this.state.url)
+    const response = await this.postUrl(this.state.alias ? this.state.alias : this.state.placeHolder, this.state.url)
     const body = await response.json()
     this.setState({ result: body, response })
     this.setState({ display: this.displayCode() })
@@ -61,17 +74,25 @@ class App extends Component {
   displayCode () {
     if (this.state.result != null) {
       if (this.state.response.ok) {
-        console.log(this.state)
         const link = `http://honk.gq/${this.state.result.alias}`
-        return (<p className="report d-flex justify-content-center">{'✅ Successfully created url! ✨'} <a href={link}> {link}</a> {'✨'}</p>)
+        return <SuccessAlert url={link}/>
       } else {
-        return <p className="report d-flex justify-content-center">{'⛔️ This alias is already in use! 😭'}</p>
+        return <WarningAlert/>
+        // return <p className="report text-center">{'⛔️ This alias is already in use! 😭'}</p>
       }
     }
     return ''
   }
 
+  async setHint () {
+    if (this.state.placeHolder == null) {
+      const adjective = await getAdjective()
+      this.setState({ placeHolder: `my-${adjective}-link` })
+    }
+  }
+
   render () {
+    this.setHint()
     return (
       <div className="App d-flex flex-column">
         <header>
@@ -79,16 +100,18 @@ class App extends Component {
         </header>
         <section>
           <div className="d-flex justify-content-center">
-            <div className="d-flex col-5 flex-column justify-content-center">
+            <div className="d-flex col-xs-11 col-sm-9 col-lg-5 flex-column justify-content-center">
               <Form className="d-flex flex-column justify-content-center mb-4">
-                <label>URL:
+                <label>Redirect URL
                   <Input id="url" name="url" placeholder="url" value={this.state.url} onChange={event => this.handleInputChange(event)}></Input>
+                  <small className="form-text text-muted">This is where your Honk will redirect you.</small>
                 </label>
-                <label>Alias:
-                  <Input id="alias" name="alias" placeholder="alias" value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
+                <label>Alias
+                  <Input id="alias" name="alias" placeholder={this.state.placeHolder} value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
+                  <small className="form-text text-muted">Your Honk will live at https://honk.gq/<strong>{this.state.alias ? this.state.alias : this.state.placeHolder}</strong></small>
                 </label>
-                <label>
-                  <Button className="submit" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create short url</Button>
+                <label className="text-center">
+                  <Button className="submit pr-3 pl-3 pt-2 mt-sm-2 mt-md-3" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create my Honk!</Button>
                 </label>
               </Form>
               {this.state.display}

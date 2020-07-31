@@ -65,6 +65,7 @@ router.post('/api/create', slowDown({
   if (!url.match(httpReg) && url.match(noHttpReg)) {
     url = `http://${url}`
   }
+
   try {
     await schema.validate({ alias, url })
     if (!alias) {
