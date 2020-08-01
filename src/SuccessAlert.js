@@ -9,10 +9,10 @@ const SuccessAlert = (props) => {
 
   return (
     <Alert color="success" isOpen={visible} toggle={onDismiss}>
-      <h5 className="alert-heading mb-0 text-center">
+      <h5 className="alert-heading m-0 text-center">
         Successfully created URL!
       </h5>
-      <p className="text-center mb-0">
+      <p className="text-center m-0">
         <a href={props.url}>
           <span role="img" aria-label="sparkle">✨</span>
           {props.url}

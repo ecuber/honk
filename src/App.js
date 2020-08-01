@@ -94,31 +94,33 @@ class App extends Component {
   render () {
     this.setHint()
     return (
-      <div className="App d-flex flex-column">
-        <header>
-          <h1 className="mt-4 d-flex justify-content-center">honk!</h1>
-        </header>
-        <section>
-          <div className="d-flex justify-content-center">
-            <div className="d-flex col-xs-11 col-sm-9 col-lg-5 flex-column justify-content-center">
-              <Form className="d-flex flex-column justify-content-center mb-4">
-                <label>Redirect URL
-                  <Input id="url" name="url" placeholder="url" value={this.state.url} onChange={event => this.handleInputChange(event)}></Input>
-                  <small className="form-text text-muted">This is where your Honk will redirect you.</small>
-                </label>
-                <label>Alias
-                  <Input id="alias" name="alias" placeholder={this.state.placeHolder} value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
-                  <small className="form-text text-muted">Your Honk will live at https://honk.gq/<strong>{this.state.alias ? this.state.alias : this.state.placeHolder}</strong></small>
-                </label>
-                <label className="text-center">
-                  <Button className="submit pr-3 pl-3 pt-2 mt-sm-2 mt-md-3" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create my Honk!</Button>
-                </label>
-              </Form>
-              {this.state.display}
-              <LoadingIndicator/>
+      <div className="row align-items-center justify-content-center" style={{ height: '90vh' }}>
+        <div className="d-flex flex-column col my-auto">
+          <header>
+            <h1 className="d-flex justify-content-center">honk!</h1>
+          </header>
+          <section>
+            <div className="d-flex justify-content-center">
+              <div className="d-flex col-xs-11 col-sm-9 col-lg-5 flex-column justify-content-center">
+                <Form className="d-flex flex-column justify-content-center mb-4">
+                  <label>Redirect URL
+                    <Input id="url" name="url" placeholder="url" value={this.state.url} onChange={event => this.handleInputChange(event)}></Input>
+                    <small className="form-text text-muted">This is where your Honk will redirect you.</small>
+                  </label>
+                  <label>Alias
+                    <Input id="alias" name="alias" placeholder={this.state.placeHolder} value={this.state.alias} onChange={event => this.handleInputChange(event)}></Input>
+                    <small className="form-text text-muted">Your Honk will live at https://honk.gq/<strong>{this.state.alias ? this.state.alias : this.state.placeHolder}</strong></small>
+                  </label>
+                  <label className="text-center">
+                    <Button className="submit px-3 pt-2 mt-sm-2 mt-md-3" type="submit" disabled={!this.state.validURL} onClick={event => this.handleSubmit(event)} onSubmit={event => this.handleSubmit(event)}>Create my Honk!</Button>
+                  </label>
+                </Form>
+                {this.state.display}
+                <LoadingIndicator/>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     )
   }
