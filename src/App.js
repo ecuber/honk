@@ -94,8 +94,8 @@ class App extends Component {
   render () {
     this.setHint()
     return (
-      <div className="container-fluid row align-items-center justify-content-center" style={{ height: '90vh' }}>
-        <div className="d-flex flex-column col my-auto">
+      <div className="container-fluid m-0 p-0 row align-items-center justify-content-center" style={{ height: '90vh' }}>
+        <div className="d-flex flex-column px-0 col my-auto">
           <header>
             <h1 className="d-flex justify-content-center">honk!</h1>
           </header>
