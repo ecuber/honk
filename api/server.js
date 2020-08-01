@@ -43,12 +43,12 @@ router.get('/:id', async (req, res, next) => {
   try {
     const url = await urls.findOne({ alias })
     if (url) {
-      return res.redirect(url.url)
+      return res.redirect(301, url.url)
     }
   } catch (err) {
-    return res.redirect('/')
+    return res.redirect(301, '/')
   }
-  return res.redirect('/')
+  return res.redirect(301, '/')
 })
 
 // handle url creation
