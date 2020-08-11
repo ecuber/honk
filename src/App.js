@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
-import './App.css'
+import { nanoid } from 'nanoid'
 import { Button, Input, Form } from 'reactstrap'
 import { usePromiseTracker, trackPromise } from 'react-promise-tracker'
+import 'bootstrap/dist/css/bootstrap.css'
+
+import './App.css'
 import WarningAlert from './WarningAlert'
 import SuccessAlert from './SuccessAlert'
 
@@ -87,7 +89,7 @@ class App extends Component {
   async setHint () {
     if (this.state.placeHolder == null) {
       const adjective = await getAdjective()
-      this.setState({ placeHolder: `my-${adjective}-link` })
+      this.setState({ placeHolder: adjective ? `my-${adjective}-link` : nanoid(7) })
     }
   }
 
