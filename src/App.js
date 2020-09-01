@@ -34,6 +34,7 @@ class App extends Component {
       url: '',
       placeHolder: null,
       validURL: false,
+      validAlias: true,
       result: null,
       response: null,
       display: null
@@ -51,6 +52,11 @@ class App extends Component {
       this.setState({
         validURL: matches && matches.length > 0
       })
+    } else {
+      const matches = target.value.match(/[&()@:%_+.~#?&/=;]/gi)
+      this.setState({
+        validAlias: !matches
+      })
     }
     this.setState({
       [target.name]: target.value.replace(/ /g, '_')
@@ -59,6 +65,10 @@ class App extends Component {
 
   async handleSubmit (event) {
     event.preventDefault()
+    if (!this.state.validAlias) {
+      this.setState({ display: this.displayCode() })
+      return
+    }
     const response = await this.postUrl(this.state.alias ? this.state.alias : this.state.placeHolder, this.state.url)
     const body = await response.json()
     this.setState({ result: body, response })
@@ -74,16 +84,12 @@ class App extends Component {
   }
 
   displayCode () {
-    if (this.state.result != null) {
-      if (this.state.response.ok) {
-        const link = `http://honk.gq/${this.state.result.alias}`
-        return <SuccessAlert url={link}/>
-      } else {
-        return <WarningAlert/>
-        // return <p className="report text-center">{'⛔️ This alias is already in use! 😭'}</p>
-      }
+    if (this.state.response && this.state.response.ok) {
+      const link = `http://honk.gq/${this.state.result.alias}`
+      return <SuccessAlert url={link}/>
+    } else {
+      return <WarningAlert type={this.state.validAlias ? 'availability' : 'invalid'}/>
     }
-    return ''
   }
 
   async setHint () {

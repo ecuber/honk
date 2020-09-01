@@ -46,9 +46,9 @@ router.get('/:id', async (req, res, next) => {
       return res.redirect(301, url.url)
     }
   } catch (err) {
-    return res.redirect(301, '/')
+    return res.redirect(307, 'https://honk.gq/')
   }
-  return res.redirect(301, '/')
+  return res.redirect(307, 'https://honk.gq/')
 })
 
 // handle url creation
@@ -86,6 +86,9 @@ router.post('/api/create', slowDown({
 })
 
 app.use('/.netlify/functions/server', router)
+app.use((req, res, next) => {
+  return res.redirect(307, 'https://honk.gq/')
+})
 
 export default app
 const handler = serverless(app)
