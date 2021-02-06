@@ -13,11 +13,11 @@ const SuccessAlert = (props) => {
         Successfully created URL!
       </h5>
       <p className="text-center m-0">
+        <span className="unselectable" role="img" aria-label="sparkle">✨</span>
         <a href={props.url}>
-          <span role="img" aria-label="sparkle">✨</span>
           {props.url}
-          <span role="img" aria-label="sparkle">✨</span>
         </a>
+        <span className="unselectable" role="img" aria-label="sparkle"> ✨</span>
       </p>
     </Alert>
   )
